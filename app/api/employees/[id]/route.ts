@@ -4,21 +4,19 @@ import connectToDatabase from "@/lib/mongodb";
 import Employee from "@/models/Employee";
 import Attendance from "@/models/Attendance";
 
-type RouteContext = {
-  params: {
-    id: string;
-  };
-};
-
-export async function DELETE(_request: Request, { params }: RouteContext) {
+export async function DELETE(
+  _request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
   try {
     await connectToDatabase();
+    const { id } = await params;
 
-    if (!params.id || !isValidObjectId(params.id)) {
+    if (!id || !isValidObjectId(id)) {
       return NextResponse.json({ error: "Employee not found." }, { status: 404 });
     }
 
-    const deletedEmployee = await Employee.findByIdAndDelete(params.id);
+    const deletedEmployee = await Employee.findByIdAndDelete(id);
 
     if (!deletedEmployee) {
       return NextResponse.json({ error: "Employee not found." }, { status: 404 });

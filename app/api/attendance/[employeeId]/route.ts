@@ -5,17 +5,15 @@ import Attendance from "@/models/Attendance";
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
-type RouteContext = {
-  params: {
-    employeeId: string;
-  };
-};
-
-export async function GET(_request: Request, { params }: RouteContext) {
+export async function GET(
+  _request: Request,
+  { params }: { params: Promise<{ employeeId: string }> }
+) {
   try {
     await connectToDatabase();
+    const { employeeId } = await params;
 
-    const records = await Attendance.find({ employeeId: params.employeeId }).sort({ date: -1 });
+    const records = await Attendance.find({ employeeId }).sort({ date: -1 });
     return NextResponse.json(records, {
       status: 200,
       headers: {
