@@ -71,7 +71,7 @@ export default function AddEmployeeForm({ onSuccess }: AddEmployeeFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 rounded-md border p-4">
+    <form onSubmit={handleSubmit} className="space-y-4 rounded-md border p-3 sm:p-4">
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <Input
           placeholder="Employee ID"

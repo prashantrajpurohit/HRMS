@@ -69,19 +69,21 @@ export default function MarkAttendanceForm({ employees, onSuccess }: MarkAttenda
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 rounded-md border p-4">
+    <form onSubmit={handleSubmit} className="space-y-4 rounded-md border p-3 sm:p-4">
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         <Select
           value={formData.employeeId}
           onValueChange={(value) => setFormData((prev) => ({ ...prev, employeeId: value }))}
         >
-          <SelectTrigger className="w-full">
+          <SelectTrigger className="w-full min-w-0">
             <SelectValue placeholder="Select employee" />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className="w-[var(--radix-select-trigger-width)] max-w-[calc(100vw-4rem)]">
             {employees.map((employee) => (
               <SelectItem key={employee._id} value={employee.employeeId}>
-                {employee.fullName} ({employee.employeeId})
+                <span className="block max-w-full truncate">
+                  {employee.fullName} ({employee.employeeId})
+                </span>
               </SelectItem>
             ))}
           </SelectContent>
@@ -99,7 +101,7 @@ export default function MarkAttendanceForm({ employees, onSuccess }: MarkAttenda
             setFormData((prev) => ({ ...prev, status: value as "Present" | "Absent" }))
           }
         >
-          <SelectTrigger className="w-full">
+          <SelectTrigger className="w-full min-w-0">
             <SelectValue placeholder="Select status" />
           </SelectTrigger>
           <SelectContent>

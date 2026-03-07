@@ -135,7 +135,7 @@ export default function AttendancePage() {
           <DialogTrigger asChild>
             <Button>Mark Attendance</Button>
           </DialogTrigger>
-          <DialogContent>
+          <DialogContent className="w-[95vw] max-w-2xl p-4 sm:p-6">
             <DialogHeader>
               <DialogTitle>Mark Attendance</DialogTitle>
               <DialogDescription>Record attendance for an employee.</DialogDescription>
@@ -152,7 +152,7 @@ export default function AttendancePage() {
       </div>
       <TableFilterBar onReset={resetFilters}>
         <Select value={employeeFilter} onValueChange={setEmployeeFilter}>
-          <SelectTrigger>
+          <SelectTrigger className="w-full">
             <SelectValue placeholder="Filter by employee" />
           </SelectTrigger>
           <SelectContent>
@@ -166,7 +166,7 @@ export default function AttendancePage() {
         </Select>
 
         <Select value={statusFilter} onValueChange={setStatusFilter}>
-          <SelectTrigger>
+          <SelectTrigger className="w-full">
             <SelectValue placeholder="Filter by status" />
           </SelectTrigger>
           <SelectContent>

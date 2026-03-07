@@ -20,7 +20,7 @@ export default function TableFilterBar({
   return (
     <div className={cn("grid grid-cols-1 gap-3 rounded-md border p-3 md:grid-cols-5", className)}>
       {children}
-      <Button type="button" variant="outline" onClick={onReset}>
+      <Button type="button" variant="outline" onClick={onReset} className="w-full md:w-auto">
         {resetLabel}
       </Button>
     </div>

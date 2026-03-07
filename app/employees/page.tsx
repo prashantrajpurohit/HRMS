@@ -137,7 +137,7 @@ export default function EmployeesPage() {
           <DialogTrigger asChild>
             <Button>Add Employee</Button>
           </DialogTrigger>
-          <DialogContent>
+          <DialogContent className="w-[95vw] max-w-2xl p-4 sm:p-6">
             <DialogHeader>
               <DialogTitle>Add Employee</DialogTitle>
               <DialogDescription>Fill in employee details and submit.</DialogDescription>
@@ -160,7 +160,7 @@ export default function EmployeesPage() {
         />
 
         <Select value={departmentFilter} onValueChange={setDepartmentFilter}>
-          <SelectTrigger>
+          <SelectTrigger className="w-full">
             <SelectValue placeholder="Filter by department" />
           </SelectTrigger>
           <SelectContent>
