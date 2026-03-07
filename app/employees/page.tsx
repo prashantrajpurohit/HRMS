@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import AddEmployeeForm from "@/components/AddEmployeeForm";
+import EditEmployeeForm from "@/components/EditEmployeeForm";
 import EmployeeTable from "@/components/EmployeeTable";
 import TableFilterBar from "@/components/table-filter-bar";
 import { Button } from "@/ui/button";
@@ -34,7 +35,9 @@ export default function EmployeesPage() {
   const [loading, setLoading] = useState(true);
   const [deletingEmployeeId, setDeletingEmployeeId] = useState<string | null>(null);
   const [error, setError] = useState("");
-  const [open, setOpen] = useState(false);
+  const [addOpen, setAddOpen] = useState(false);
+  const [editOpen, setEditOpen] = useState(false);
+  const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
 
   const fetchEmployees = useCallback(async () => {
     setLoading(true);
@@ -76,6 +79,11 @@ export default function EmployeesPage() {
     } finally {
       setDeletingEmployeeId(null);
     }
+  };
+
+  const handleEdit = (employee: Employee) => {
+    setSelectedEmployee(employee);
+    setEditOpen(true);
   };
 
   const departmentOptions = useMemo(() => {
@@ -133,7 +141,7 @@ export default function EmployeesPage() {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-semibold">Employees</h1>
-        <Dialog open={open} onOpenChange={setOpen}>
+        <Dialog open={addOpen} onOpenChange={setAddOpen}>
           <DialogTrigger asChild>
             <Button>Add Employee</Button>
           </DialogTrigger>
@@ -144,13 +152,32 @@ export default function EmployeesPage() {
             </DialogHeader>
             <AddEmployeeForm
               onSuccess={async () => {
-                setOpen(false);
+                setAddOpen(false);
                 await fetchEmployees();
               }}
             />
           </DialogContent>
         </Dialog>
       </div>
+
+      <Dialog open={editOpen} onOpenChange={setEditOpen}>
+        <DialogContent className="w-[95vw] max-w-2xl p-4 sm:p-6">
+          <DialogHeader>
+            <DialogTitle>Edit Employee</DialogTitle>
+            <DialogDescription>Update employee details and save.</DialogDescription>
+          </DialogHeader>
+          {selectedEmployee ? (
+            <EditEmployeeForm
+              employee={selectedEmployee}
+              onSuccess={async () => {
+                setEditOpen(false);
+                setSelectedEmployee(null);
+                await fetchEmployees();
+              }}
+            />
+          ) : null}
+        </DialogContent>
+      </Dialog>
 
       <TableFilterBar onReset={resetFilters}>
         <Input
@@ -182,6 +209,7 @@ export default function EmployeesPage() {
       {!loading && !error ? (
         <EmployeeTable
           employees={filteredEmployees}
+          onEdit={handleEdit}
           onDelete={handleDelete}
           deletingEmployeeId={deletingEmployeeId}
         />

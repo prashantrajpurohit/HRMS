@@ -21,12 +21,14 @@ type Employee = {
 
 type EmployeeTableProps = {
   employees: Employee[];
+  onEdit: (employee: Employee) => void;
   onDelete: (id: string) => Promise<void>;
   deletingEmployeeId?: string | null;
 };
 
 export default function EmployeeTable({
   employees,
+  onEdit,
   onDelete,
   deletingEmployeeId = null,
 }: EmployeeTableProps) {
@@ -58,14 +60,24 @@ export default function EmployeeTable({
               <TableCell>{employee.email}</TableCell>
               <TableCell>{employee.department}</TableCell>
               <TableCell className="text-right">
-                <Button
-                  variant="destructive"
-                  size="sm"
-                  onClick={() => onDelete(employee._id)}
-                  disabled={Boolean(deletingEmployeeId)}
-                >
-                  {deletingEmployeeId === employee._id ? "Deleting..." : "Delete"}
-                </Button>
+                <div className="flex justify-end gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => onEdit(employee)}
+                    disabled={Boolean(deletingEmployeeId)}
+                  >
+                    Edit
+                  </Button>
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    onClick={() => onDelete(employee._id)}
+                    disabled={Boolean(deletingEmployeeId)}
+                  >
+                    {deletingEmployeeId === employee._id ? "Deleting..." : "Delete"}
+                  </Button>
+                </div>
               </TableCell>
             </TableRow>
           ))}

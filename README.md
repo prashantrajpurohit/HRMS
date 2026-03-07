@@ -1,36 +1,122 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# HRMS Lite
 
-## Getting Started
+Simple HRMS app built with Next.js + MongoDB.
 
-First, run the development server:
+## Features
+- Dashboard counts (Total Employees, Present Today, Absent Today)
+- Employee management: add, edit, delete
+- Attendance marking + attendance history
+- Filtering on Employees and Attendance pages
+- Light/Dark theme switch
 
+## Tech
+- Next.js (App Router)
+- React + TypeScript
+- Tailwind CSS + shadcn-style UI
+- MongoDB + Mongoose
+
+## Quick Start
+1. Install deps:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Create `.env.local`:
+```env
+MONGODB_URI=your_mongodb_connection_string
+# optional fallback key supported by app:
+# MONGO_URI=your_mongodb_connection_string
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+# optional for cross-origin API usage:
+# CORS_ORIGINS=http://localhost:5008,https://your-frontend-domain.com
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+3. Run app:
+```bash
+npm run dev
+```
 
-## Learn More
+Default local URL: `http://localhost:5008`
 
-To learn more about Next.js, take a look at the following resources:
+## Build
+```bash
+npm run build
+npm run start
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## App Routes
+- `/` dashboard
+- `/employees` employees page
+- `/attendance` attendance page
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## API Routes
+- `GET /api/dashboard`
+- `GET /api/employees`
+- `POST /api/employees`
+- `PUT /api/employees/[id]` update employee
+  - If `employeeId` changes, linked attendance records are updated too
+- `DELETE /api/employees/[id]`
+  - Also removes attendance records for that employee
+- `GET /api/attendance`
+- `POST /api/attendance`
+- `GET /api/attendance/[employeeId]`
 
-## Deploy on Vercel
+## Main Components
+- `app/layout.tsx`: global layout + theme providers + top nav
+- `components/hrms-top-nav.tsx`: nav links + active state + theme toggle
+- `components/theme-toggle.tsx`: light/dark switch
+- `components/DashboardCards.tsx`: dashboard metrics cards
+- `components/AddEmployeeForm.tsx`: add employee modal form
+- `components/EditEmployeeForm.tsx`: edit employee modal form
+- `components/EmployeeTable.tsx`: employees table + edit/delete actions
+- `components/MarkAttendanceForm.tsx`: mark attendance modal form
+- `components/AttendanceTable.tsx`: attendance table + present summary
+- `components/table-filter-bar.tsx`: shared filter UI wrapper
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Folder Overview
+```txt
+app/
+  api/
+    attendance/
+    dashboard/
+    employees/
+  attendance/
+  employees/
+  layout.tsx
+  page.tsx
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+components/
+  AddEmployeeForm.tsx
+  EditEmployeeForm.tsx
+  EmployeeTable.tsx
+  MarkAttendanceForm.tsx
+  AttendanceTable.tsx
+  DashboardCards.tsx
+  hrms-top-nav.tsx
+  theme-toggle.tsx
+  table-filter-bar.tsx
+
+lib/
+  mongodb.ts
+
+models/
+  Employee.ts
+  Attendance.ts
+```
+
+## Troubleshooting
+- `Please define MONGODB_URI...`
+  - Set `MONGODB_URI` (or `MONGO_URI`) and restart server.
+
+- Vercel API `500`
+  - Verify env vars in Vercel project settings.
+  - Verify MongoDB user/password and network access.
+
+- CORS error
+  - Set `CORS_ORIGINS` as comma-separated allowed origins.
+
+## Scripts
+- `npm run dev`
+- `npm run build`
+- `npm run start`
+- `npm run lint`
